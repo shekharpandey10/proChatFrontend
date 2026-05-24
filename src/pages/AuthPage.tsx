@@ -1,6 +1,8 @@
 import React from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import Tabs from '../components/common/Tabs'
+import LoginForm from '@/components/forms/LoginForm'
+import SignUpForm from '@/components/forms/SignUpForm'
 
 const tabs = [
     {
@@ -29,7 +31,7 @@ function AuthPage() {
                 </header>
                 <Tabs tabs={tabs} activeTab={activeTab} onChange={handleTabChange} />
                 <main className='flex flex-col'>
-
+                    {activeTab === 'login' ? <LoginForm /> : <SignUpForm />}
                 </main>
             </div>
 

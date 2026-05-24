@@ -17,7 +17,7 @@ function Tabs({ tabs, activeTab, onChange, className }: tabProps) {
                 const isActive = tab.value === activeTab
                 return (
                     <Button key={tab.value} onClick={() => onChange(tab.value)} className={cn(
-                        " relative flex-1 rounded-lg px-4 py-2 text-sm font-medium transition-all text-black bg-white",
+                        " relative flex-1 rounded-lg px-4 py-2 text-sm font-medium transition-all text-black bg-white hover:bg-white",
                     )}>
                         {tab.value}
                         <span
