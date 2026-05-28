@@ -1,14 +1,8 @@
 import axios from 'axios'
 import useAuthStore from '../store/authstore'
 
-declare const process: {
-    env: {
-        BASE_URL?: string
-    }
-}
-
-const baseurl = (process.env.BASE_URL ?? '') as string;
-
+const baseurl = import.meta.env.VITE_BASE_URL;
+console.log(baseurl)
 const api = axios.create({
     baseURL: baseurl,
     withCredentials: true

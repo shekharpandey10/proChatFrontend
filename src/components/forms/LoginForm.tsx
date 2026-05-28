@@ -5,10 +5,19 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '
 import { Input } from '../ui/input';
 import { Button } from '../ui/button';
 import type { loginProp } from '@/type';
+import api from "@/utils/api";
+import apiRoutes from "@/utils/apiRoutes";
+import handleResponse from "@/utils/handleResponse";
+import useAuthStore from "@/store/authstore";
+import { useState } from "react";
 
 
 
 function LoginForm() {
+
+    const setAccessToken = useAuthStore((store) => store.setAccessToken)
+    const setUser = useAuthStore((store) => store.setUser)
+    const [loading, setLoading] = useState(false)
 
     const form = useForm<LoginFormValues>({
         resolver: zodResolver(loginSchema),
@@ -18,8 +27,26 @@ function LoginForm() {
         }
     })
 
-    const handleLogin = (value: loginProp) => {
-        console.log(value)
+    const handleLogin = async (value: loginProp) => {
+        try {
+            setLoading(true)
+            const res = await api.post(apiRoutes.auth.login, value)
+            const result = res?.data
+            if (result?.success) {
+                const accessToken = result?.accessToken;
+                const user = result?.data;
+                await setAccessToken(accessToken)
+                await setUser(user)
+                handleResponse(res)
+            } else {
+                throw new Error('Invalid User')
+            }
+        } catch (error) {
+            handleResponse(error)
+
+        } finally {
+            setLoading(false)
+        }
     }
 
 
@@ -56,7 +83,7 @@ function LoginForm() {
                     )}
                 />
 
-                <Button type='submit' className='w-full bg-primary'>Login</Button>
+                <Button type='submit' className='w-full bg-primary' disabled={loading}>{loading ? 'Loading...' : 'Login'}</Button>
             </form>
         </Form>
     )
