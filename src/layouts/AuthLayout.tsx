@@ -6,9 +6,7 @@ import { useEffect } from 'react';
 
 
 function AuthLayout() {
-    useEffect(() => {
-        checkAuth()
-    }, [])
+
     return (
         <div className='min-h-screen flex flex-col  '>
             <PublicNav />

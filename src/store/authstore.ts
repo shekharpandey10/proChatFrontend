@@ -9,8 +9,9 @@ interface authState {
         token: string | null
     ) => void;
 
-    isAuthenticated: boolean | null;
-
+    isAuthenticated: boolean;
+    isAuthLoader: boolean
+    setIsAuthLoader: (isLoading: boolean) => void;
 
     setUser: (
         user: authState['user'] | null
@@ -41,15 +42,20 @@ const useAuthStore = create<authState>()(
 
             accessToken: null,
             isAuthenticated: false,
-
+            isAuthLoader: true,
             setAccessToken: (token) =>
 
                 set(
-                    { accessToken: token, isAuthenticated: !!token },
+                    { accessToken: token, isAuthenticated: !!token, isAuthLoader: false },
                     false,
                     "auth/AccessToken"
                 ),
-
+            setIsAuthLoader: (isLoading) =>
+                set(
+                    { isAuthLoader: isLoading },
+                    false,
+                    "auth/setIsAuthLoader"
+                ),
 
 
             user: initialUser,
@@ -66,7 +72,7 @@ const useAuthStore = create<authState>()(
                     "auth/setUser"
                 ),
             logout: () => set(
-                { accessToken: null, user: initialUser, isAuthenticated: false },
+                { accessToken: null, user: initialUser, isAuthenticated: false, isAuthLoader: false },
                 false,
                 "auth/logout"
             )
