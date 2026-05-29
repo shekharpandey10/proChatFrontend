@@ -4,9 +4,13 @@ import { devtools } from "zustand/middleware";
 interface authState {
     accessToken?: string | null;
 
+
     setAccessToken: (
         token: string | null
     ) => void;
+
+    isAuthenticated: boolean | null;
+
 
     setUser: (
         user: authState['user'] | null
@@ -17,7 +21,8 @@ interface authState {
         id: string | null,
         first_name: string | null,
         last_name: string | null
-    }
+    };
+    logout: () => void;
 }
 
 const initialUser = {
@@ -27,6 +32,7 @@ const initialUser = {
     last_name: null
 };
 
+
 const useAuthStore = create<authState>()(
 
     devtools(
@@ -34,14 +40,17 @@ const useAuthStore = create<authState>()(
         (set) => ({
 
             accessToken: null,
+            isAuthenticated: false,
 
             setAccessToken: (token) =>
 
                 set(
-                    { accessToken: token },
+                    { accessToken: token, isAuthenticated: !!token },
                     false,
                     "auth/AccessToken"
                 ),
+
+
 
             user: initialUser,
 
@@ -55,7 +64,12 @@ const useAuthStore = create<authState>()(
                     },
                     false,
                     "auth/setUser"
-                )
+                ),
+            logout: () => set(
+                { accessToken: null, user: initialUser, isAuthenticated: false },
+                false,
+                "auth/logout"
+            )
 
         }),
 

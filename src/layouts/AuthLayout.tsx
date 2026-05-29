@@ -1,10 +1,14 @@
 import PublicNav from '../components/layouts/PublicNav'
 import { Outlet } from 'react-router-dom'
 import toast, { Toaster } from 'react-hot-toast';
+import checkAuth from '@/service/checkAuth';
+import { useEffect } from 'react';
 
-const notify = () => toast('Here is your toast.');
 
 function AuthLayout() {
+    useEffect(() => {
+        checkAuth()
+    }, [])
     return (
         <div className='min-h-screen flex flex-col  '>
             <PublicNav />

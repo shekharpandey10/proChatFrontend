@@ -3,12 +3,18 @@ import ROUTES from "../utils/routePath";
 import AuthLayout from '../layouts/AuthLayout'
 import MainLayout from "../layouts/MainLayout";
 import AuthPage from "../pages/AuthPage";
+import PublicRoute from "@/components/PublicRoute";
+import PrivateRoute from "@/components/PrivateRoute";
 const router = createBrowserRouter([
     {
         path: ROUTES.HOME,
-        element: <MainLayout />
+        element: <PrivateRoute>
+            <MainLayout />
+        </PrivateRoute>
     }, {
-        element: <AuthLayout />
+        element: <PublicRoute>
+            <AuthLayout />
+        </PublicRoute>
         , children: [
             {
                 path: "/login",
