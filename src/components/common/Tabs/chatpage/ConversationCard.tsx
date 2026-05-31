@@ -1,4 +1,4 @@
-interface Props {
+type Props = {
     name: string;
 
     message: string;
@@ -6,16 +6,23 @@ interface Props {
     time: string;
 
     active?: boolean;
-}
+
+    avatar?: string;
+
+    onClick?: () => void;
+};
 
 function ConversationCard({
     name,
     message,
     time,
     active,
+    avatar,
+    onClick,
 }: Props) {
     return (
         <div
+            onClick={onClick}
             className={`
         flex
         items-center
@@ -27,22 +34,30 @@ function ConversationCard({
         mb-2
 
         ${active
-                    ? "bg-violet-100"
-                    : "hover:bg-gray-100"
+                    ? `
+              bg-violet-100
+            `
+                    : `
+              hover:bg-gray-100
+            `
                 }
       `}
         >
-            {/* Avatar */}
+            {/* AVATAR */}
             <img
-                src="https://i.pravatar.cc/150?img=32"
+                src={
+                    avatar ||
+                    "https://i.pravatar.cc/150?img=32"
+                }
                 className="
           w-14
           h-14
           rounded-full
+          object-cover
         "
             />
 
-            {/* Content */}
+            {/* CONTENT */}
             <div className="flex-1">
 
                 <div

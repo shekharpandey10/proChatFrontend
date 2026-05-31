@@ -2,38 +2,103 @@ import {
     Search,
     SquarePen,
 } from "lucide-react";
-import ConversationCard from "./ConversationCard";
 
+import ConversationCard
+    from "./ConversationCard";
 
+import api from "@/utils/api";
 
-const conversations = [
-    {
-        id: 1,
-        name: "Sarah Jenkins",
-        message:
-            "The quarterly report looks great...",
-        time: "10:42 AM",
-        active: true,
-    },
+import apiRoutes
+    from "@/utils/apiRoutes";
 
-    {
-        id: 2,
-        name: "Marcus Chen",
-        message:
-            "Can you send the figma file?",
-        time: "Yesterday",
-    },
+import {
+    useEffect,
+    useState,
+} from "react";
 
-    {
-        id: 3,
-        name: "Jessica Wu",
-        message:
-            "Draft approved.",
-        time: "Monday",
-    },
-];
+import handleResponse
+    from "@/utils/handleResponse";
 
-function ChatSidebar() {
+import {
+    NewChatDialog,
+} from "./NewChatDialog";
+
+type ConversationType = {
+    id: string;
+
+    first_name: string;
+
+    last_name: string;
+
+    avatar?: string;
+
+    lastMessage?: string;
+};
+
+type ChatSidebarProp = {
+    selectedId: string | null;
+
+    setSelectedId: (
+        id: string
+    ) => void;
+};
+
+function ChatSidebar({
+    selectedId,
+    setSelectedId,
+}: ChatSidebarProp) {
+    const [
+        conversations,
+        setConversations,
+    ] = useState<
+        ConversationType[]
+    >([]);
+
+    const [
+        loading,
+        setLoading,
+    ] = useState(false);
+
+    const [
+        newChat,
+        setNewChat,
+    ] = useState(false);
+
+    const fetchList =
+        async () => {
+            try {
+                setLoading(true);
+
+                const response =
+                    await api.get(
+                        apiRoutes.chat
+                            .fetchConversationFirst
+                    );
+
+                const result =
+                    response.data;
+
+                const data =
+                    result?.data || [];
+
+                setConversations(data);
+
+                if (data.length > 0) {
+                    setSelectedId(
+                        data[0].id
+                    );
+                }
+            } catch (error) {
+                handleResponse(error);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+    useEffect(() => {
+        fetchList();
+    }, []);
+
     return (
         <div
             className="
@@ -45,7 +110,7 @@ function ChatSidebar() {
         flex-col
       "
         >
-            {/* Header */}
+            {/* HEADER */}
             <div
                 className="
           p-6
@@ -74,13 +139,18 @@ function ChatSidebar() {
             flex
             items-center
             justify-center
+            hover:bg-violet-700
+            transition-all
           "
+                    onClick={() =>
+                        setNewChat(true)
+                    }
                 >
                     <SquarePen />
                 </button>
             </div>
 
-            {/* Search */}
+            {/* SEARCH */}
             <div className="p-4">
                 <div
                     className="
@@ -106,23 +176,77 @@ function ChatSidebar() {
                 </div>
             </div>
 
-            {/* Conversation List */}
+            {/* LIST */}
             <div
                 className="
           flex-1
           overflow-y-auto
           px-3
+          pb-4
         "
             >
-                {conversations.map(
-                    (conversation) => (
-                        <ConversationCard
-                            key={conversation.id}
-                            {...conversation}
-                        />
+                {loading ? (
+                    <div
+                        className="
+              h-full
+              flex
+              items-center
+              justify-center
+              text-gray-500
+            "
+                    >
+                        Loading...
+                    </div>
+                ) : conversations.length >
+                    0 ? (
+                    conversations.map(
+                        (conversation) => (
+                            <ConversationCard
+                                key={
+                                    conversation.id
+                                }
+                                name={`${conversation.first_name} ${conversation.last_name}`}
+                                message={
+                                    conversation.lastMessage ||
+                                    "Start chatting..."
+                                }
+                                active={
+                                    selectedId ===
+                                    conversation.id
+                                }
+                                time="10:42 AM"
+                                avatar={
+                                    conversation.avatar
+                                }
+                                onClick={() =>
+                                    setSelectedId(
+                                        conversation.id
+                                    )
+                                }
+                            />
+                        )
                     )
+                ) : (
+                    <div
+                        className="
+              h-full
+              flex
+              items-center
+              justify-center
+              text-gray-400
+            "
+                    >
+                        No conversations found
+                    </div>
                 )}
             </div>
+
+            <NewChatDialog
+                open={newChat}
+                setOpen={setNewChat}
+                title="Start New Chat"
+                desc="Search users and start conversations"
+            />
         </div>
     );
 }

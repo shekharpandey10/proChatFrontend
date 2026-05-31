@@ -3,6 +3,11 @@ const apiRoutes = {
     auth: {
         login: baseurl + 'login',
         refreshToken: baseurl + 'auth/refresh'
+    },
+    chat: {
+        fetchConversationFirst: baseurl + "chat/conversation",
+        newUserList: baseurl + "chat/discovery",
+        fetchChatDetail: baseurl + 'chat/discovery/'
     }
 
 }
