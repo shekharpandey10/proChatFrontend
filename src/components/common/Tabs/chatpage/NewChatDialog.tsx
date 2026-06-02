@@ -7,6 +7,11 @@ import {
     DialogTitle,
     DialogTrigger,
 } from "@/components/ui/dialog"
+import { Spinner } from "@/components/ui/spinner"
+import api from "@/utils/api"
+import apiRoutes from "@/utils/apiRoutes"
+import handleResponse from "@/utils/handleResponse"
+import { useEffect, useState } from "react"
 
 interface NewChatDialogProp {
     open?: boolean,
@@ -18,6 +23,29 @@ interface NewChatDialogProp {
 export function NewChatDialog({ open, setOpen, title, desc }: NewChatDialogProp
 
 ) {
+    const [newUser, setNewUser] = useState([])
+    const [loading, setLoading] = useState(false)
+    const fetchUserList = async () => {
+        try {
+            setLoading(true)
+            const response = await api.get(apiRoutes.chat.newUserList);
+            const result = response.data
+            setNewUser(result.data)
+            console.log(result.data)
+        } catch (error) {
+            setNewUser([])
+            handleResponse(error)
+        } finally {
+            setLoading(false)
+        }
+    }
+
+    useEffect(() => {
+        if (!open) return
+        fetchUserList()
+    }, [open])
+
+
     return (
         <Dialog open={open} onOpenChange={setOpen}>
             <DialogTrigger asChild>
@@ -72,10 +100,13 @@ export function NewChatDialog({ open, setOpen, title, desc }: NewChatDialogProp
                 {/* USER LIST */}
                 <div className=" overflow-y-auto px-4 py-4">
 
-                    {Array.from({ length: 10 }).map((_, index) => (
-                        <div
-                            key={index}
-                            className="
+                    {loading ? <div className="flex-1 w-full flex justify-center items-center min-h-[300px]">
+                        <Spinner className="size-10" />
+                    </div> : (
+                        newUser.length > 0 && newUser.map((data: any) => (
+                            <div
+                                key={data.id}
+                                className="
                     flex
                     items-center
                     gap-4
@@ -86,67 +117,68 @@ export function NewChatDialog({ open, setOpen, title, desc }: NewChatDialogProp
                     mb-2
                     hover:bg-gray-100
                 "
-                        >
-                            {/* AVATAR */}
-                            <img
-                                src="https://i.pravatar.cc/150?img=32"
-                                className="
+                            >
+                                {/* AVATAR */}
+                                <img
+                                    src="https://i.pravatar.cc/150?img=32"
+                                    className="
                         w-14
                         h-14
                         rounded-full
                         object-cover
                     "
-                            />
+                                />
 
-                            {/* CONTENT */}
-                            <div className="flex-1">
+                                {/* CONTENT */}
+                                <div className="flex-1">
 
-                                <div
-                                    className="
+                                    <div
+                                        className="
                             flex
                             justify-between
                             items-center
                         "
-                                >
-                                    <h3
-                                        className="
+                                    >
+                                        <h3
+                                            className="
                                 font-semibold
                                 text-lg
                             "
-                                    >
-                                        Sarah Jenkins
-                                    </h3>
+                                        >
+                                            {`${data?.first_name} ${data?.last_name}`}
+                                        </h3>
 
-                                    <span
-                                        className="
+                                        <span
+                                            className="
                                 text-xs
                                 text-gray-500
                             "
-                                    >
-                                        Online
-                                    </span>
-                                </div>
+                                        >
+                                            Online
+                                        </span>
+                                    </div>
 
-                                <p
-                                    className="
+                                    <p
+                                        className="
                             text-gray-500
                             truncate
                         "
-                                >
-                                    Frontend Developer
-                                </p>
-                            </div>
+                                    >
+                                        Frontend Developer
+                                    </p>
+                                </div>
 
-                            {/* ACTION */}
-                            <Button
-                                className="
+                                {/* ACTION */}
+                                <Button
+                                    className="
                         rounded-xl
                     "
-                            >
-                                Chat
-                            </Button>
-                        </div>
-                    ))}
+                                >
+                                    Chat
+                                </Button>
+                            </div>
+                        ))
+                    )}
 
                 </div>
             </DialogContent>

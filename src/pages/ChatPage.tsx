@@ -13,8 +13,8 @@ function ChatPage() {
     const fetchConversation = async () => {
         try {
             debugger
-            const response = await api.get(apiRoutes.chat.fetchChatDetail + selectedId)
-            const result = response.data
+            // const response = await api.get(apiRoutes.chat.fetchChatDetail + selectedId)
+            // const result = response.data
 
         } catch (error) {
             handleResponse(error)

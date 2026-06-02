@@ -7,7 +7,7 @@ const apiRoutes = {
     chat: {
         fetchConversationFirst: baseurl + "chat/conversation",
         newUserList: baseurl + "chat/discovery",
-        fetchChatDetail: baseurl + 'chat/discovery/'
+        // fetchChatDetail: baseurl + 'chat/discovery/'
     }
 
 }
