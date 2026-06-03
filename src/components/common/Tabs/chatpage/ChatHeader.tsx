@@ -4,7 +4,20 @@ import {
     Info,
 } from "lucide-react";
 
-function ChatHeader() {
+interface chatUserProp {
+    first_name?: string,
+    last_name?: string,
+    id?: string,
+}
+interface ChatHeaderProps {
+    chatUser: chatUserProp | null;
+}
+
+
+function ChatHeader({ chatUser }: ChatHeaderProps) {
+    console.log(chatUser, 'cjskf')
+    const { first_name, last_name }: any = chatUser || {};
+    console.log(first_name, 'cjskf')
     return (
         <header
             className="
@@ -65,7 +78,7 @@ function ChatHeader() {
               text-gray-900
             "
                     >
-                        Sarah Jenkins
+                        {`${first_name}  ${last_name}`}
                     </h2>
 
                     <p

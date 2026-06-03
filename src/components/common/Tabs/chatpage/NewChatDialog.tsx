@@ -16,11 +16,12 @@ import { useEffect, useState } from "react"
 interface NewChatDialogProp {
     open?: boolean,
     setOpen: (s: boolean) => void,
+    setSelectedId: (s: string) => void,
     title?: string,
     desc?: string,
 }
 
-export function NewChatDialog({ open, setOpen, title, desc }: NewChatDialogProp
+export function NewChatDialog({ open, setOpen, title, desc, setSelectedId }: NewChatDialogProp
 
 ) {
     const [newUser, setNewUser] = useState([])
@@ -171,8 +172,12 @@ export function NewChatDialog({ open, setOpen, title, desc }: NewChatDialogProp
                                 {/* ACTION */}
                                 <Button
                                     className="
-                        rounded-xl
+                        rounded-xl cursor-pointer
                     "
+                                    onClick={() => {
+                                        setSelectedId(data?.id)
+                                        setOpen(false)
+                                    }}
                                 >
                                     Chat
                                 </Button>

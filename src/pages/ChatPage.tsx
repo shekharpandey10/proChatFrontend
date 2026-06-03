@@ -10,25 +10,12 @@ function ChatPage() {
     const [chatData, setChatData] = useState(null)
 
 
-    const fetchConversation = async () => {
-        try {
-            debugger
-            // const response = await api.get(apiRoutes.chat.fetchChatDetail + selectedId)
-            // const result = response.data
 
-        } catch (error) {
-            handleResponse(error)
-        }
-    }
-
-    useEffect(() => {
-        if (selectedId) fetchConversation()
-    }, [selectedId])
     return (
         <div className='flex' >
 
             <ChatSidebar setSelectedId={setSelectedId} selectedId={selectedId} />
-            <ChatWindow />
+            <ChatWindow selectedId={selectedId} />
 
         </div>
     )

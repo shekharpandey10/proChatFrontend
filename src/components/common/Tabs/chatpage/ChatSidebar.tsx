@@ -245,6 +245,7 @@ function ChatSidebar({
             <NewChatDialog
                 open={newChat}
                 setOpen={setNewChat}
+                setSelectedId={setSelectedId}
                 title="Start New Chat"
                 desc="Search users and start conversations"
             />
