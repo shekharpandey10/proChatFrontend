@@ -11,6 +11,8 @@ import api from "@/utils/api";
 import apiRoutes from "@/utils/apiRoutes";
 import handleResponse from "@/utils/handleResponse";
 import { Spinner } from "@/components/ui/spinner";
+import { sendMessage } from "@/config/socket";
+
 
 interface chatWindowProp {
     selectedId?: string | null
@@ -42,6 +44,11 @@ function ChatWindow({ selectedId }: chatWindowProp) {
         fetchChat()
     }, [selectedId])
 
+    const submitMessage = (text: string) => {
+        if (!selectedId) return;
+        sendMessage(selectedId, text)
+    }
+
     return (
         <div
             className="
@@ -56,7 +63,7 @@ function ChatWindow({ selectedId }: chatWindowProp) {
 
                 <MessageList />
 
-                <MessageInput />
+                <MessageInput submitMessage={submitMessage} />
             </> : <div className='flex justify-center h-screen items-center'>
                 <Spinner className='size-10' />
             </div>) : <div className="flex justify-center h-screen items-center"><span>Start new conversation</span></div>}

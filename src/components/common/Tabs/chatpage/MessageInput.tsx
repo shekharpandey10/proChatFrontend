@@ -3,8 +3,13 @@ import {
     Smile,
     Plus,
 } from "lucide-react";
+import { useState } from "react";
 
-function MessageInput() {
+type MessageInputProp = {
+    submitMessage: (text: string) => void
+}
+function MessageInput({ submitMessage }: MessageInputProp) {
+    const [message, setMessage] = useState<string>('')
     return (
         <div
             className="
@@ -39,6 +44,9 @@ function MessageInput() {
             bg-transparent
             outline-none
           "
+                    onChange={(e) => {
+                        setMessage(e.target.value)
+                    }}
                 />
 
                 <button
@@ -49,8 +57,14 @@ function MessageInput() {
             py-3
             rounded-xl
           "
+                    onClick={() => {
+                        if (!message) return
+                        submitMessage(message)
+                        setMessage('')
+                    }}
                 >
                     <Send size={18} />
+
                 </button>
             </div>
         </div>
