@@ -46,6 +46,7 @@ function ChatWindow({ selectedId }: chatWindowProp) {
 
     const submitMessage = (text: string) => {
         if (!selectedId) return;
+        console.log(selectedId)
         sendMessage(selectedId, text)
     }
 

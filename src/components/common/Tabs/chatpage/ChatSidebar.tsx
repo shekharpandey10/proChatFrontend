@@ -73,7 +73,7 @@ function ChatSidebar({
                 const response =
                     await api.get(
                         apiRoutes.chat
-                            .fetchConversationFirst
+                            .aleadyMessages
                     );
 
                 const result =

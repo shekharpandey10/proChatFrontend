@@ -1,3 +1,4 @@
+import { Input } from "@/components/ui/input";
 import {
     Send,
     Smile,
@@ -37,15 +38,19 @@ function MessageInput({ submitMessage }: MessageInputProp) {
                     <Smile />
                 </button>
 
-                <input
+                <Input
                     placeholder="Write message..."
                     className="
             flex-1
             bg-transparent
             outline-none
           "
+                    value={message}
                     onChange={(e) => {
                         setMessage(e.target.value)
+                    }}
+                    onKeyDown={(e) => {
+                        if (e.key === 'Enter') submitMessage(message)
                     }}
                 />
 
