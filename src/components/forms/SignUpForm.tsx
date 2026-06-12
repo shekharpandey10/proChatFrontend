@@ -5,6 +5,9 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { Input } from "../ui/input"
 import { Button } from "../ui/button"
 import type { signUpProps } from "@/type"
+import handleResponse from "@/utils/handleResponse"
+import api from "@/utils/api"
+import apiRoutes from "@/utils/apiRoutes"
 
 
 function SignUpForm() {
@@ -17,8 +20,19 @@ function SignUpForm() {
             password: ''
         }
     })
-    const handleSignUp = (value: signUpProps) => {
-        console.log(value)
+    const handleSignUp = async (value: signUpProps) => {
+        try {
+            debugger
+            const response = await api.post(apiRoutes.auth.signup, value)
+            console.log(response)
+            const result = response.data
+            if (result?.success) {
+                handleResponse(response)
+            }
+        } catch (error: any) {
+            handleResponse(error)
+        }
+
     }
     return (
         <Form {...form}>

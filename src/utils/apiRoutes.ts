@@ -2,6 +2,7 @@ const baseurl = import.meta.env.VITE_BASE_URL;
 const apiRoutes = {
     auth: {
         login: baseurl + 'login',
+        signup: baseurl + 'signup',
         logout: baseurl + 'logout',
         refreshToken: baseurl + 'auth/refresh'
     },

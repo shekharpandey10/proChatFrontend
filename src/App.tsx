@@ -3,14 +3,18 @@ import './App.css'
 import router from './router'
 import { useEffect } from 'react'
 import checkAuth from './service/checkAuth'
+import { Toaster } from 'react-hot-toast'
+
 function App() {
-
-
   useEffect(() => {
     checkAuth()
   }, [])
+
   return (
-    < RouterProvider router={router} />
+    <>
+      <Toaster position="top-right" />
+      <RouterProvider router={router} />
+    </>
   )
 }
 

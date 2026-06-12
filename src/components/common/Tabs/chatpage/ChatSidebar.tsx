@@ -54,6 +54,7 @@ function ChatSidebar({
         ConversationType[]
     >([]);
 
+    console.log(conversations, 'fsdf')
     const [
         loading,
         setLoading,

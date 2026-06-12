@@ -2,10 +2,14 @@ import { toast } from "react-hot-toast";
 
 
 const handleResponse = (response: any) => {
-    if (response?.data?.success) {
-        toast.success(response?.data?.message)
+    debugger
+    const data = response?.response?.data ?? response?.data;
+    const message = data?.message ?? response?.message ?? 'Something went wrong';
+
+    if (data?.success) {
+        toast.success(message)
     } else {
-        toast.error(response.data.message || 'something went wrong');
+        toast.error(message);
     }
 }
 
