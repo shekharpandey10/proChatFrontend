@@ -52,9 +52,10 @@ export const bottomItems = [
 
     {
         title: "Logout",
+        action: "logout",
 
         icon: LogOut,
 
-        path: "/logout",
+
     },
 ];
